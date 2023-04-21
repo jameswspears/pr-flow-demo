@@ -3,4 +3,9 @@ export default {
   moduleNameMapper: {
     "@/(.*)": ["<rootDir>/src/$1"],
   },
+  collectCoverage: true,
+  collectCoverageFrom: [
+    './src/**/*.{ts,tsx}',
+    '!**/node_modules/**',
+  ],
 };
