@@ -13,7 +13,6 @@ jobs:
       id-token: write
       contents: read
 
-    # Service containers to run with `acceptance-test`
     services:
       dynamodb:
         image: "amazon/dynamodb-local:latest"
@@ -42,6 +41,7 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm ci
         env:
@@ -58,6 +58,7 @@ jobs:
       - uses: aws-actions/setup-sam@v2
         with:
           use-installer: true
+
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::989966476585:role/ci
@@ -101,120 +102,78 @@ jobs:
           name: cypress-video
           path: |
             cypress/videos
-  # generate-package:
-  #   needs: acceptance-test
-  #   runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
+  generate-package:
+    needs: acceptance-test
+    runs-on: ubuntu-latest
 
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18.x
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  #     - name: Git config
-  #       run: |
-  #         git config --global user.name '🤖'
-  #         git config --global user.email '🤖'
-  #     - name: Bump version
-  #       id: version-bump
-  #       uses: actions/checkout@v3
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
 
-  #     - name: Bump patch version
-  #       if: endsWith(github.ref, '/main')
-  #       run: echo "version=$(npm version patch -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
+      - name: Git config
+        run: |
+          git config --global user.name '🤖'
+          git config --global user.email '🤖'
+      - name: Bump version
+        id: version-bump
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - name: Bump prepatch version
-  #       if: endsWith(github.ref, '/dev')
-  #       run: echo "version=$(npm version prerelease -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
+      - name: Bump patch version
+        if: endsWith(github.ref, '/main')
+        run: echo "version=$(npm version patch -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
 
-  #     - name: Install dependencies
-  #       run: npm ci
+      - name: Bump prepatch version
+        if: endsWith(github.ref, '/dev')
+        run: echo "version=$(npm version prerelease -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
 
-  #     - name: Build
-  #       run: npm run build
+      - name: Git Push
+        run: |
+          git push
+          git push --tags
 
-  #     - name: Archive build artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: lib
-  #         path: |
-  #           dist
-  #           package*.json
-  #     - run: npm publish
-  #       env:
-  #         NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  create-release:
+    needs: generate-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-  #     - name: Git Push
-  #       run: |
-  #         git push
-  #         git push --tags
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
 
-  # generate-docs:
-  #   needs: generate-package
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
-
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18.x
-
-  #     - name: Install dependencies
-  #       run: npm install
-
-  #     - name: Generate Documentation
-  #       run: npm run doc
-
-  #     - name: Archive documentation artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: docs
-  #         path: |
-  #           docs
-
-  # create-release:
-  #   needs: generate-package
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
-
-  #     - name: Setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18.x
-
-  #     - name: Set version
-  #       id: vars
-  #       shell: bash
-  #       run: |
-  #         git fetch -a
-  #         echo "RELEASE_TAG=$(git tag --sort=committerdate | tail -1)" >> $GITHUB_ENV
-  #     - name: Create release
-  #       uses: 'actions/github-script@v6'
-  #       env:
-  #         RELEASE_TAG: ${{ env.RELEASE_TAG }}
-  #       with:
-  #         github-token: '${{ secrets.GITHUB_TOKEN }}'
-  #         script: |
-  #           try {
-  #             await github.rest.repos.createRelease({
-  #               draft: false,
-  #               generate_release_notes: true,
-  #               name: process.env.RELEASE_TAG,
-  #               owner: context.repo.owner,
-  #               prerelease: process.env.RELEASE_TAG.includes('-') ? true : false,
-  #               repo: context.repo.repo,
-  #               tag_name: process.env.RELEASE_TAG,
-  #             });
-  #           } catch (error) {
-  #             core.setFailed(error.message);
-  #           }
+      - name: Set version
+        id: vars
+        shell: bash
+        run: |
+          git fetch -a
+          echo "RELEASE_TAG=$(git tag --sort=committerdate | tail -1)" >> $GITHUB_ENV
+      - name: Create release
+        uses: 'actions/github-script@v6'
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          script: |
+            try {
+              await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                name: process.env.RELEASE_TAG,
+                owner: context.repo.owner,
+                prerelease: process.env.RELEASE_TAG.includes('-') ? true : false,
+                repo: context.repo.repo,
+                tag_name: process.env.RELEASE_TAG,
+              });
+            } catch (error) {
+              core.setFailed(error.message);
+            }
