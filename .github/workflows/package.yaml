@@ -69,7 +69,10 @@ jobs:
 
       - name: Start SAM Local
         run: |
-          npm run start:ci -w lambdas
+          cd lambdas
+          docker network create lambda-net
+          docker network connect lambda-net dynamodb
+          sam local start-api --docker-network lambda-net > /dev/null 2>&1 &
 
       - name: E2E Test
         uses: cypress-io/github-action@v4

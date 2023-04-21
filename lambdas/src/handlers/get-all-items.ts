@@ -6,7 +6,7 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import type { APIGatewayEvent } from 'aws-lambda';
 
 const client = new DynamoDBClient({
-  endpoint: 'http://localhost:8000',
+  endpoint: 'http://dynamodb:8000',
 });
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
@@ -32,7 +32,7 @@ export const getAllItemsHandler = async (event: APIGatewayEvent) => {
     TableName: tableName,
   };
 
-  let items: Record<string, any>[] | undefined = [];
+  let items;
   try {
     const data = await ddbDocClient.send(new ScanCommand(params));
     items = data.Items;
@@ -42,7 +42,7 @@ export const getAllItemsHandler = async (event: APIGatewayEvent) => {
 
   const response = {
     statusCode: 200,
-    body: JSON.stringify(items),
+    body: JSON.stringify(items || []),
   };
 
   // All log statements are written to CloudWatch
