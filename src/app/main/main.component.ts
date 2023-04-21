@@ -10,10 +10,13 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 export class MainComponent {
   value$: Observable<Record<string, unknown>[]> = this.httpClient
     .get<Record<string, unknown>[]>('/api/v1/value')
-    .pipe(tap((value) => console.log('value', value)), catchError((err) => {
-      this.error = true;
-      return throwError(() => err);
-    }));
+    .pipe(
+      tap((value) => console.log('value', value)),
+      catchError((err) => {
+        this.error = true;
+        return throwError(() => err);
+      })
+    );
 
   error = false;
 
