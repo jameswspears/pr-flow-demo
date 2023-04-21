@@ -71,7 +71,7 @@ jobs:
         with:
           name: cypress-video
           path: |
-            cypress/video
+            cypress/videos
 
   # generate-package:
   #   needs: acceptance-test
