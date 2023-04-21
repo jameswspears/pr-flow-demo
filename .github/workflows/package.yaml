@@ -75,6 +75,22 @@ jobs:
           path: |
             cypress/video
 
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build Lambdas
+        run: |
+          npm run build -w lambdas
+
+      - name: Start SAM Local
+        run: |
+          npm run start:ci -w lambdas
   # generate-package:
   #   needs: acceptance-test
   #   runs-on: ubuntu-latest
