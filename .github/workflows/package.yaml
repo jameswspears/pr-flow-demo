@@ -69,7 +69,7 @@ jobs:
 
       - name: Start SAM Local
         run: |
-          npm run start:ci -w lambdas --network ${{ job.container.network }}
+          npm run start:ci -w lambdas --network=${{ job.container.network }}
 
       - name: E2E Test
         uses: cypress-io/github-action@v4
