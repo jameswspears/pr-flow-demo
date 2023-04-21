@@ -58,7 +58,7 @@ function __generator(thisArg, body) {
 
 // Create clients and set shared const values outside of the handler.
 var client = new clientDynamodb.DynamoDBClient({
-    endpoint: "http://dynamodb:8080"
+    endpoint: 'http://dynamodb:8080'
 });
 var ddbDocClient = libDynamodb.DynamoDBDocumentClient.from(client);
 // Get the DynamoDB table name from environment constiables
@@ -90,7 +90,7 @@ var getAllItemsHandler = function (event) { return __awaiter(void 0, void 0, voi
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
-                console.log("Error", err_1);
+                console.log('Error', err_1);
                 return [3 /*break*/, 4];
             case 4:
                 response = {
