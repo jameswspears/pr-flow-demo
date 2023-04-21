@@ -9,6 +9,9 @@ on:
 jobs:
   acceptance-test:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     # Service containers to run with `acceptance-test`
     services:
