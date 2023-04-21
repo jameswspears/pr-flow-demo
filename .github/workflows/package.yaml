@@ -89,7 +89,6 @@ jobs:
 
       - name: Archive SAM log
         uses: actions/upload-artifact@v3
-        if: failure()
         with:
           name: sam-log
           path: |
