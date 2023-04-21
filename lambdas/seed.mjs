@@ -1,33 +1,33 @@
-import { DynamoDBClient, CreateTableCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb";
 
 const configuration = {
-  apiVersion: '2012-08-10',
-  endpoint: 'http://localhost:8000'
-}
+  apiVersion: "2012-08-10",
+  endpoint: "http://localhost:8000",
+};
 
 const ddbClient = new DynamoDBClient(configuration);
 
 const params = {
   AttributeDefinitions: [
     {
-      AttributeName: 'id',
-      AttributeType: 'S'
-    }
+      AttributeName: "id",
+      AttributeType: "S",
+    },
   ],
   KeySchema: [
     {
-      AttributeName: 'id',
-      KeyType: 'HASH'
-    }
+      AttributeName: "id",
+      KeyType: "HASH",
+    },
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 1,
-    WriteCapacityUnits: 1
+    WriteCapacityUnits: 1,
   },
-  TableName: 'SampleTable',
+  TableName: "SampleTable",
   StreamSpecification: {
-    StreamEnabled: false
-  }
+    StreamEnabled: false,
+  },
 };
 
 const run = async () => {
