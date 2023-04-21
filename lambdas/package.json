@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "sam local start-api --docker-network lambdas_dynamodb",
-    "start:ci": "sam local start-api > ./sam.log 2>&1 &",
+    "start:ci": "sam local start-api $npm_config_network > ./sam.log 2>&1 &",
     "build": "rollup -c ./rollup.config.js",
     "test": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js"
   }

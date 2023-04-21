@@ -69,10 +69,7 @@ jobs:
 
       - name: Start SAM Local
         run: |
-          cd lambdas
-          echo ${{ job.container.network }}
-          sam local start-api ${{ job.container.network }} > ./sam.log 2>&1 &
-          cd ../
+          npm run start:ci -w lambdas --network ${{ job.container.network }}
 
       - name: E2E Test
         uses: cypress-io/github-action@v4
@@ -88,6 +85,7 @@ jobs:
 
       - name: Archive SAM log
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
           name: sam-log
           path: |
