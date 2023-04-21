@@ -17,8 +17,12 @@ jobs:
     services:
       dynamodb:
         image: "amazon/dynamodb-local:latest"
+        networks:
+          - dynamodb
         ports:
           - "8000:8000"
+    networks:
+      dynamodb:
 
     steps:
       - name: Checkout code
