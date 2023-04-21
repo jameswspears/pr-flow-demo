@@ -70,7 +70,7 @@ jobs:
       - name: Start SAM Local
         run: |
           cd lambdas
-          sam local start-api --docker-network {{ job.services.dynamodb.network }} > /dev/null 2>&1 &
+          sam local start-api --docker-network {{ job.container.network }} > /dev/null 2>&1 &
           cd ../
 
       - name: E2E Test
