@@ -67,8 +67,9 @@ jobs:
 
       - name: Archive video artifacts
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
-          name: video
+          name: cypress-video
           path: |
             cypress/video
 
