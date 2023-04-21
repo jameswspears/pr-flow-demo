@@ -41,7 +41,7 @@ jobs:
       - name: Unit Test
         run: |
           npm test
-          npm test -w lambdas 
+          npm test -w lambdas
 
       - name: Archive coverage artifacts
         uses: actions/upload-artifact@v3
