@@ -6,7 +6,7 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import type { APIGatewayEvent } from 'aws-lambda';
 
 const client = new DynamoDBClient({
-  endpoint: 'http://localhost:8080',
+  endpoint: 'http://localhost:8000',
 });
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
