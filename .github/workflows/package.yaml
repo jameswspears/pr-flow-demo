@@ -8,6 +8,15 @@ jobs:
   acceptance-test:
     runs-on: ubuntu-latest
 
+    # Service containers to run with `acceptance-test`
+    services:
+      dynamodb:
+        image: "amazon/dynamodb-local:latest"
+        command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+        container_name: dynamodb
+        ports:
+          - "8000:8000"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

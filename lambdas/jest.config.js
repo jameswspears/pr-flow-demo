@@ -4,8 +4,5 @@ export default {
     "@/(.*)": ["<rootDir>/src/$1"],
   },
   collectCoverage: true,
-  collectCoverageFrom: [
-    './src/**/*.{ts,tsx}',
-    '!**/node_modules/**',
-  ],
+  collectCoverageFrom: ["./src/**/*.{ts,tsx}", "!**/node_modules/**"],
 };
