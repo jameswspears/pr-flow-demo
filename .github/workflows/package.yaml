@@ -13,7 +13,6 @@ jobs:
       dynamodb:
         image: "amazon/dynamodb-local:latest"
         command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-        container_name: dynamodb
         ports:
           - "8000:8000"
 
