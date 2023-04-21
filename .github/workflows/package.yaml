@@ -137,7 +137,6 @@ jobs:
       - name: Git Push
         run: |
           git push
-          git push --tags
 
   create-release:
     needs: generate-package
