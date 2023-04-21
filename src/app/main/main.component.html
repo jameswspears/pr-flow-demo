@@ -1,5 +1,6 @@
 <ng-container *ngIf="{ value: (value$ | async) } as data">
-  <div *ngIf="!data.value">Loading...</div>
+  <div *ngIf="!data.value && !error">Loading...</div>
+  <div *ngIf="!data.value && error">Oops, something went wrong.</div>
   <div *ngIf="data.value" data-test-id="value">
     Found {{ data.value.length }} items in the DB.
   </div>
