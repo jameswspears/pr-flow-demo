@@ -65,6 +65,13 @@ jobs:
           path: |
             coverage
 
+      - name: Archive video artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: video
+          path: |
+            cypress/video
+
   # generate-package:
   #   needs: acceptance-test
   #   runs-on: ubuntu-latest
