@@ -73,10 +73,7 @@ jobs:
 
       - name: E2E Test
         uses: cypress-io/github-action@v4
-        env:
-          CYPRESS_POSTGRES_HOST: localhost
         with:
-          build: npm run build
           start: npm start
 
       - name: Archive coverage artifacts
