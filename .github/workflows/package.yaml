@@ -103,7 +103,7 @@ jobs:
           path: |
             cypress/videos
 
-  generate-package:
+  bump-version:
     needs: acceptance-test
     runs-on: ubuntu-latest
 
@@ -137,9 +137,10 @@ jobs:
       - name: Git Push
         run: |
           git push
+          git push --tags
 
   create-release:
-    needs: generate-package
+    needs: bump-version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
