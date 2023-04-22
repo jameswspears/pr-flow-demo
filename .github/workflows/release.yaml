@@ -30,10 +30,6 @@ jobs:
       - name: Bump patch version
         run: echo "version=$(npm version patch -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
 
-      # - name: Bump prepatch version
-      #   if: endsWith(github.ref, '/dev')
-      #   run: echo "version=$(npm version prerelease -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
-
       - name: Git Push
         run: |
           git push
