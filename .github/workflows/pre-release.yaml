@@ -1,7 +1,7 @@
-name: Release
+name: Pre-release
 on:
   push:
-    branches: [main]
+    branches: [staging]
   workflow_dispatch:
 
 jobs:
@@ -27,12 +27,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bump patch version
-        run: echo "version=$(npm version patch -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
-
-      # - name: Bump prepatch version
-      #   if: endsWith(github.ref, '/dev')
-      #   run: echo "version=$(npm version prerelease -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
+      - name: Bump prepatch version
+        run: echo "version=$(npm version prerelease -m 'Bump version v%s [skip ci]')" >> $GITHUB_ENV
 
       - name: Git Push
         run: |

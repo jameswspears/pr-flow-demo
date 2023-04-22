@@ -1,4 +1,4 @@
-name: CI
+name: Acceptance Test
 on:
   pull_request:
     types: [opened, reopened]
@@ -7,9 +7,6 @@ on:
 jobs:
   acceptance-test:
     runs-on: ubuntu-latest
-    # permissions:
-    #   id-token: write
-    #   contents: read
 
     services:
       dynamodb:
