@@ -1,7 +1,7 @@
 name: Acceptance Test
 on:
   pull_request:
-    types: [opened, updated, reopened]
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
