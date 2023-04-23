@@ -73,3 +73,11 @@ jobs:
             } catch (error) {
               core.setFailed(error.message);
             }
+
+  deploy:
+    needs: create-release
+    runs-on: ubuntu-latest   
+    steps:
+      - name: Deploy to Staging
+        run: |
+          echo "Staging Deploy Goes Here"
