@@ -78,7 +78,7 @@ jobs:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
-      - name: 
+      - name:
         run: |
           echo "Staging Deploy Goes Here"
 
