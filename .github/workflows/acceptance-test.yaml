@@ -51,7 +51,6 @@ jobs:
       - name: Unit Test
         run: |
           npm test
-          npm test -w pr-flow-demo-api
 
       - uses: aws-actions/setup-sam@v2
         with:
