@@ -76,7 +76,7 @@ jobs:
 
   deploy:
     needs: create-release
-    runs-on: ubuntu-latest   
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to Production
         run: |
