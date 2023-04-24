@@ -1,6 +1,6 @@
 {
   "name": "pr-flow-demo",
-  "version": "0.0.4",
+  "version": "0.0.4-3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -47,6 +47,6 @@
     "typescript": "~4.9.4"
   },
   "workspaces": [
-    "lambdas"
+    "pr-flow-demo-submodule"
   ]
 }

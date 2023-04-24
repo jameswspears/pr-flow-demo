@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -51,7 +53,6 @@ jobs:
       - name: Unit Test
         run: |
           npm test
-          npm test -w lambdas
 
       - uses: aws-actions/setup-sam@v2
         with:
@@ -62,17 +63,17 @@ jobs:
           role-to-assume: arn:aws:iam::989966476585:role/ci
           aws-region: us-east-1
 
-      - name: Build Lambdas
+      - name: Build pr-flow-demo-submodule
         run: |
-          npm run build -w lambdas
+          npm run build -w pr-flow-demo-submodule
 
       - name: Start SAM Local
         run: |
-          npm run start:ci -w lambdas --network=${{ job.container.network }}
+          npm run start:ci -w pr-flow-demo-submodule --network=${{ job.container.network }}
 
       - name: Seed the Database
         run: |
-          node ./lambdas/seed.mjs
+          node ./pr-flow-demo-submodule/seed.mjs
 
       - name: E2E Test
         uses: cypress-io/github-action@v4
@@ -91,7 +92,7 @@ jobs:
         with:
           name: sam-log
           path: |
-            lambdas/sam.log
+            pr-flow-demo-submodule/sam.log
 
       - name: Archive video artifacts
         uses: actions/upload-artifact@v3
