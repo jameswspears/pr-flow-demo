@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           git fetch -a
-          echo "RELEASE_TAG=$(git tag --sort=committerdate | tail -1)" >> $GITHUB_ENV
+          echo "RELEASE_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
       - name: Create release
         uses: "actions/github-script@v6"
         env:

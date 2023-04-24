@@ -1,0 +1,3 @@
+[submodule "pr-flow-demo-submodule"]
+	path = pr-flow-demo-submodule
+	url = git@github.com:jameswspears/pr-flow-demo-submodule.git
